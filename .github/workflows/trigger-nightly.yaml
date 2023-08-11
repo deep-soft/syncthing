@@ -1,9 +1,9 @@
 name: Trigger nightly build & release
 on:
   workflow_dispatch:
-  schedule:
-    # Run nightly build at 01:00 UTC
-    - cron: '00 01 * * *'
+#  schedule:
+#    # Run nightly build at 01:00 UTC
+#    - cron: '00 01 * * *'
 
 jobs:
 
