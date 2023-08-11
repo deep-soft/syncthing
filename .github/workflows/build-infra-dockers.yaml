@@ -1,9 +1,10 @@
 name: Build Infrastructure Images
 
 on:
-  push:
-    branches:
-      - infrastructure
+#  push:
+#    branches:
+#      - infrastructure
+  workflow_dispatch:
 
 env:
     GO_VERSION: "^1.20.5"
