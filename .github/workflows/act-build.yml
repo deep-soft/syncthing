@@ -136,7 +136,7 @@ jobs:
 
   package-windows:
     name: Package for Windows
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/release' || startsWith(github.ref, 'refs/heads/release-'))
+    # if: github.event_name == 'push' && (github.ref == 'refs/heads/release' || startsWith(github.ref, 'refs/heads/release-'))
     environment: signing
     runs-on: windows-latest
     steps:
