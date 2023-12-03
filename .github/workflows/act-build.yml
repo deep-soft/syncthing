@@ -9,6 +9,9 @@ on:
   workflow_dispatch:
 
 env:
+  PRG_NAME: "syncthing"
+  TAG_NAME: "syncthing"
+
   # The go version to use for builds. We set check-latest to true when
   # installing, so we get the latest patch version that matches the
   # expression.
@@ -183,6 +186,24 @@ jobs:
           CODESIGN_CERTIFICATE_PASSWORD: ${{ secrets.CODESIGN_CERTIFICATE_PASSWORD }}
           CODESIGN_TIMESTAMP_SERVER: ${{ secrets.CODESIGN_TIMESTAMP_SERVER }}
 
+      - name: set TAG_NAME
+        continue-on-error: true
+        shell: bash
+        run: |
+          TAG_NAME=${{ env.PRG_NAME }}-$RUNNER_OS;
+          echo "TAG_NAME=$TAG_NAME";
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+
+      - name: Publish archives
+        continue-on-error: true
+        uses: deep-soft/action-gh-release@v1
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          files: |
+            "syncthing-*.zip"
+            "syncthing-*.tar.gz"
+            "*.deb"
+
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -222,6 +243,24 @@ jobs:
           done
         env:
           CGO_ENABLED: "0"
+
+      - name: set TAG_NAME
+        continue-on-error: true
+        shell: bash
+        run: |
+          TAG_NAME=${{ env.PRG_NAME }}-$RUNNER_OS;
+          echo "TAG_NAME=$TAG_NAME";
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+
+      - name: Publish archives
+        continue-on-error: true
+        uses: deep-soft/action-gh-release@v1
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          files: |
+            "syncthing-*.zip"
+            "syncthing-*.tar.gz"
+            "*.deb"
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
@@ -317,6 +356,24 @@ jobs:
           mv syncthing "$universal"
           zip -r "../$universal.zip" "$universal"
 
+      - name: set TAG_NAME
+        continue-on-error: true
+        shell: bash
+        run: |
+          TAG_NAME=${{ env.PRG_NAME }}-$RUNNER_OS;
+          echo "TAG_NAME=$TAG_NAME";
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+
+      - name: Publish archives
+        continue-on-error: true
+        uses: deep-soft/action-gh-release@v1
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          files: |
+            "syncthing-*.zip"
+            "syncthing-*.tar.gz"
+            "*.deb"
+
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -402,6 +459,24 @@ jobs:
         env:
           CGO_ENABLED: "0"
 
+      - name: set TAG_NAME
+        continue-on-error: true
+        shell: bash
+        run: |
+          TAG_NAME=${{ env.PRG_NAME }}-$RUNNER_OS;
+          echo "TAG_NAME=$TAG_NAME";
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+
+      - name: Publish archives
+        continue-on-error: true
+        uses: deep-soft/action-gh-release@v1
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          files: |
+            "syncthing-*.zip"
+            "syncthing-*.tar.gz"
+            "*.deb"
+
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -441,6 +516,24 @@ jobs:
             syncthing
 
           mv "syncthing-source-$version.tar.gz" syncthing
+
+      - name: set TAG_NAME
+        continue-on-error: true
+        shell: bash
+        run: |
+          TAG_NAME=${{ env.PRG_NAME }}-$RUNNER_OS;
+          echo "TAG_NAME=$TAG_NAME";
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+
+      - name: Publish archives
+        continue-on-error: true
+        uses: deep-soft/action-gh-release@v1
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          files: |
+            "syncthing-*.zip"
+            "syncthing-*.tar.gz"
+            "*.deb"
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
@@ -514,6 +607,24 @@ jobs:
         env:
           GNUPG_SIGNING_KEY_BASE64: ${{ secrets.GNUPG_SIGNING_KEY_BASE64 }}
 
+      - name: set TAG_NAME
+        continue-on-error: true
+        shell: bash
+        run: |
+          TAG_NAME=${{ env.PRG_NAME }}-$RUNNER_OS;
+          echo "TAG_NAME=$TAG_NAME";
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+
+      - name: Publish archives
+        continue-on-error: true
+        uses: deep-soft/action-gh-release@v1
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          files: |
+            "syncthing-*.zip"
+            "syncthing-*.tar.gz"
+            "*.deb"
+
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -560,6 +671,24 @@ jobs:
           done
         env:
           BUILD_USER: debian
+
+      - name: set TAG_NAME
+        continue-on-error: true
+        shell: bash
+        run: |
+          TAG_NAME=${{ env.PRG_NAME }}-$RUNNER_OS;
+          echo "TAG_NAME=$TAG_NAME";
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+
+      - name: Publish archives
+        continue-on-error: true
+        uses: deep-soft/action-gh-release@v1
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          files: |
+            "syncthing-*.zip"
+            "syncthing-*.tar.gz"
+            "*.deb"
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
