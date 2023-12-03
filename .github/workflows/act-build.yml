@@ -200,9 +200,9 @@ jobs:
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            "syncthing-*.zip"
-            "syncthing-*.tar.gz"
-            "*.deb"
+            syncthing-*.zip
+            syncthing-*.tar.gz
+            *.deb
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
@@ -258,9 +258,9 @@ jobs:
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            "syncthing-*.zip"
-            "syncthing-*.tar.gz"
-            "*.deb"
+            syncthing-*.zip
+            syncthing-*.tar.gz
+            *.deb
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
@@ -370,9 +370,9 @@ jobs:
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            "syncthing-*.zip"
-            "syncthing-*.tar.gz"
-            "*.deb"
+            syncthing-*.zip
+            syncthing-*.tar.gz
+            *.deb
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
@@ -473,9 +473,9 @@ jobs:
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            "syncthing-*.zip"
-            "syncthing-*.tar.gz"
-            "*.deb"
+            syncthing-*.zip
+            syncthing-*.tar.gz
+            *.deb
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
@@ -531,9 +531,9 @@ jobs:
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            "syncthing-*.zip"
-            "syncthing-*.tar.gz"
-            "*.deb"
+            syncthing-*.zip
+            syncthing-*.tar.gz
+            *.deb
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
@@ -621,9 +621,9 @@ jobs:
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            "syncthing-*.zip"
-            "syncthing-*.tar.gz"
-            "*.deb"
+            syncthing-*.zip
+            syncthing-*.tar.gz
+            *.deb
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
@@ -686,9 +686,9 @@ jobs:
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            "syncthing-*.zip"
-            "syncthing-*.tar.gz"
-            "*.deb"
+            syncthing-*.zip
+            syncthing-*.tar.gz
+            *.deb
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
