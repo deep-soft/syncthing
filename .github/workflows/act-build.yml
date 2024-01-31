@@ -77,9 +77,9 @@ jobs:
           git config --global core.autocrlf false
           git config --global core.eol lf
 
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
 
-      - uses: actions/setup-go@v4
+      - uses: deep-soft/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
           cache: true
@@ -112,9 +112,9 @@ jobs:
     name: Check correctness
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
 
-      - uses: actions/setup-go@v4
+      - uses: deep-soft/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
@@ -145,7 +145,7 @@ jobs:
       - package-debian
       - govulncheck
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
 
   #
   # Windows
@@ -166,11 +166,11 @@ jobs:
           git config --global core.autocrlf false
           git config --global core.eol lf
 
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-go@v4
+      - uses: deep-soft/setup-go@v5
         with:
           # Temporary version constraint to avoid 1.21.4 which has a bug in
           # path handling. This can be removed when 1.21.5 is released.
@@ -183,7 +183,7 @@ jobs:
           go version
           echo "GO_VERSION=$(go version | sed 's#^.*go##;s# .*##')" >> $GITHUB_ENV
 
-      - uses: actions/cache@v3
+      - uses: deep-soft/cache@v4
         with:
           path: |
             ~\AppData\Local\go-build
@@ -217,7 +217,7 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v1
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -226,7 +226,7 @@ jobs:
             syncthing*.deb
 
       - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+        uses: deep-soft/upload-artifact@v4
         with:
           name: packages-windows
           path: syncthing-windows-*.zip
@@ -239,11 +239,11 @@ jobs:
     name: Package for Linux
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-go@v4
+      - uses: deep-soft/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
@@ -254,7 +254,7 @@ jobs:
           go version
           echo "GO_VERSION=$(go version | sed 's#^.*go##;s# .*##')" >> $GITHUB_ENV
 
-      - uses: actions/cache@v3
+      - uses: deep-soft/cache@v4
         with:
           path: |
             ~/.cache/go-build
@@ -280,7 +280,7 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v1
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -289,7 +289,7 @@ jobs:
             syncthing*.deb
 
       - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+        uses: deep-soft/upload-artifact@v4
         with:
           name: packages-linux
           path: syncthing-linux-*.tar.gz
@@ -304,11 +304,11 @@ jobs:
     environment: signing
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-go@v4
+      - uses: deep-soft/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
@@ -319,7 +319,7 @@ jobs:
           go version
           echo "GO_VERSION=$(go version | sed 's#^.*go##;s# .*##')" >> $GITHUB_ENV
 
-      - uses: actions/cache@v3
+      - uses: deep-soft/cache@v4
         with:
           path: |
             ~/.cache/go-build
@@ -397,7 +397,7 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v1
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -406,7 +406,7 @@ jobs:
             syncthing*.deb
 
       - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+        uses: deep-soft/upload-artifact@v4
         with:
           name: packages-macos
           path: syncthing-*.zip
@@ -421,7 +421,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: packages-macos
 
@@ -449,11 +449,11 @@ jobs:
     name: Package cross compiled
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-go@v4
+      - uses: deep-soft/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
@@ -464,7 +464,7 @@ jobs:
           go version
           echo "GO_VERSION=$(go version | sed 's#^.*go##;s# .*##')" >> $GITHUB_ENV
 
-      - uses: actions/cache@v3
+      - uses: deep-soft/cache@v4
         with:
           path: |
             ~/.cache/go-build
@@ -512,7 +512,7 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v1
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -521,7 +521,7 @@ jobs:
             syncthing*.deb
 
       - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+        uses: deep-soft/upload-artifact@v4
         with:
           name: packages-other
           path: syncthing-*.tar.gz
@@ -534,11 +534,11 @@ jobs:
     name: Package source code
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-go@v4
+      - uses: deep-soft/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
@@ -570,7 +570,7 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v1
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -579,7 +579,7 @@ jobs:
             syncthing*.deb
 
       - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+        uses: deep-soft/upload-artifact@v4
         with:
           name: packages-source
           path: syncthing-source-*.tar.gz
@@ -601,18 +601,18 @@ jobs:
       - package-source
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
         with:
           repository: syncthing/release-tools
           path: tools
           fetch-depth: 0
 
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: deep-soft/download-artifact@v4
 
       - name: Install signing tool
         run: |
@@ -660,7 +660,7 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v1
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -669,7 +669,7 @@ jobs:
             syncthing*.deb
 
       - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+        uses: deep-soft/upload-artifact@v4
         with:
           name: packages-signed
           path: packages/*
@@ -682,11 +682,11 @@ jobs:
     name: Package for Debian
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-go@v4
+      - uses: deep-soft/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
@@ -697,7 +697,7 @@ jobs:
           go version
           echo "GO_VERSION=$(go version | sed 's#^.*go##;s# .*##')" >> $GITHUB_ENV
 
-      - uses: ruby/setup-ruby@v1
+      - uses: deep-soft/setup-ruby@v1
         with:
           ruby-version: '3.0'
 
@@ -705,7 +705,7 @@ jobs:
         run: |
           gem install fpm
 
-      - uses: actions/cache@v3
+      - uses: deep-soft/cache@v4
         with:
           path: |
             ~/.cache/go-build
@@ -730,7 +730,7 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v1
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -739,7 +739,7 @@ jobs:
             syncthing*.deb
 
       - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+        uses: deep-soft/upload-artifact@v4
         with:
           name: debian-packages
           path: "*.deb"
@@ -757,14 +757,14 @@ jobs:
       - notarize-macos
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
         with:
           repository: syncthing/release-tools
           path: tools
           fetch-depth: 0
 
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: deep-soft/download-artifact@v4
         with:
           name: packages-signed
           path: packages
@@ -801,18 +801,18 @@ jobs:
       - package-debian
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Download signed packages
-        uses: actions/download-artifact@v3
+        uses: deep-soft/download-artifact@v4
         with:
           name: packages-signed
           path: packages
 
       - name: Download debian packages
-        uses: actions/download-artifact@v3
+        uses: deep-soft/download-artifact@v4
         with:
           name: debian-packages
           path: packages
@@ -872,11 +872,11 @@ jobs:
             dockerfile: Dockerfile.stdiscosrv
             image: syncthing/discosrv
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-go@v4
+      - uses: deep-soft/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
@@ -887,7 +887,7 @@ jobs:
           go version
           echo "GO_VERSION=$(go version | sed 's#^.*go##;s# .*##')" >> $GITHUB_ENV
 
-      - uses: actions/cache@v3
+      - uses: deep-soft/cache@v4
         with:
           path: |
             ~/.cache/go-build
@@ -959,9 +959,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Run govulncheck
     steps:
-      - uses: actions/checkout@v4
+      - uses: deep-soft/checkout@v4
 
-      - uses: actions/setup-go@v4
+      - uses: deep-soft/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
