@@ -3343,6 +3343,11 @@ angular.module('syncthing.core')
                 return 'checkbox';
             }
             if (value instanceof Array) {
+                if (value.some(function (element) {
+                    return typeof element !== 'number' && typeof element !== 'string';
+                })) {
+                    return 'skip';
+                }
                 return 'list';
             }
             if (typeof value === 'object') {
@@ -3698,7 +3703,6 @@ angular.module('syncthing.core')
                 untrusted: '=',
             },
             link: function (scope, elem, attrs) {
-                var plain = false;
                 scope.togglePasswordVisibility = function() {
                     scope.plain = !scope.plain;
                 };
