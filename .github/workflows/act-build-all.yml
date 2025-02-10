@@ -202,10 +202,10 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v2.1
         #    syncthing*.zip
         #    syncthing*.tar.gz
         #    syncthing*.deb
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -215,10 +215,9 @@ jobs:
 
       - name: Archive artifacts
         uses: deep-soft/upload-artifact@v4
-        #path: syncthing-windows-*.zip
         with:
           name: packages-windows
-          path: -*.zip
+          path: *.zip
 
   #
   # Linux
@@ -269,10 +268,10 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v2.1
         #    syncthing*.zip
         #    syncthing*.tar.gz
         #    syncthing*.deb
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -389,10 +388,10 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v2.1
         #    syncthing*.zip
         #    syncthing*.tar.gz
         #    syncthing*.deb
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -507,10 +506,10 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        #uses: deep-soft/action-gh-release@v2.1
         #    syncthing*.zip
         #    syncthing*.tar.gz
         #    syncthing*.deb
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -568,10 +567,10 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v2.1
         #    syncthing*.zip
         #    syncthing*.tar.gz
         #    syncthing*.deb
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -661,10 +660,10 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v2.1
         #    syncthing*.zip
         #    syncthing*.tar.gz
         #    syncthing*.deb
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
@@ -734,10 +733,10 @@ jobs:
 
       - name: Publish archives
         continue-on-error: true
-        uses: deep-soft/action-gh-release@v2.1
         #    syncthing*.zip
         #    syncthing*.tar.gz
         #    syncthing*.deb
+        uses: deep-soft/action-gh-release@v2.1
         with:
           tag_name: ${{ env.TAG_NAME }}
           files: |
