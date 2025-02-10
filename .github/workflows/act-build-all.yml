@@ -217,7 +217,7 @@ jobs:
         uses: deep-soft/upload-artifact@v4
         with:
           name: packages-windows
-          path: *.zip
+          path: -*.zip
 
   #
   # Linux
