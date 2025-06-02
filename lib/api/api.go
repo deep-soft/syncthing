@@ -8,6 +8,7 @@ package api
 
 import (
 	"bytes"
+	"cmp"
 	"context"
 	"crypto/tls"
 	"crypto/x509"
@@ -24,7 +25,7 @@ import (
 	"reflect"
 	"runtime"
 	"runtime/pprof"
-	"sort"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -92,6 +93,7 @@ type service struct {
 	listenerAddr         net.Addr
 	exitChan             chan *svcutil.FatalErr
 	miscDB               *db.NamespacedKV
+	shutdownTimeout      time.Duration
 
 	guiErrors logger.Recorder
 	systemLog logger.Recorder
@@ -129,6 +131,7 @@ func New(id protocol.DeviceID, cfg config.Wrapper, assetDir, tlsDefaultCommonNam
 		startedOnce:          make(chan struct{}),
 		exitChan:             make(chan *svcutil.FatalErr, 1),
 		miscDB:               miscDB,
+		shutdownTimeout:      100 * time.Millisecond,
 	}
 }
 
@@ -451,7 +454,7 @@ func (s *service) Serve(ctx context.Context) error {
 	}
 	// Give it a moment to shut down gracefully, e.g. if we are restarting
 	// due to a config change through the API, let that finish successfully.
-	timeout, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+	timeout, cancel := context.WithTimeout(context.Background(), s.shutdownTimeout)
 	defer cancel()
 	if err := srv.Shutdown(timeout); err == timeout.Err() {
 		srv.Close()
@@ -748,7 +751,7 @@ func (*service) getSystemVersion(w http.ResponseWriter, _ *http.Request) {
 func (*service) getSystemDebug(w http.ResponseWriter, _ *http.Request) {
 	names := l.Facilities()
 	enabled := l.FacilityDebugging()
-	sort.Strings(enabled)
+	slices.Sort(enabled)
 	sendJSON(w, map[string]interface{}{
 		"facilities": names,
 		"enabled":    enabled,
@@ -1533,8 +1536,8 @@ func (*service) getLang(w http.ResponseWriter, r *http.Request) {
 		langs = append(langs, code)
 	}
 	// Reorder by descending q value
-	sort.SliceStable(langs, func(i, j int) bool {
-		return weights[langs[i]] > weights[langs[j]]
+	slices.SortStableFunc(langs, func(i, j string) int {
+		return cmp.Compare(weights[j], weights[i])
 	})
 	sendJSON(w, langs)
 }
@@ -1762,7 +1765,7 @@ func browse(fsType fs.FilesystemType, current string) []string {
 		return browseRoots(fsType)
 	}
 
-	parent, base := parentAndBase(current)
+	parent, base := filepath.Split(current)
 	ffs := fs.NewFilesystem(fsType, parent)
 	files := browseFiles(ffs, base)
 	for i := range files {
@@ -1798,27 +1801,6 @@ func browseRoots(fsType fs.FilesystemType) []string {
 	return nil
 }
 
-// parentAndBase returns the parent directory and the remaining base of the
-// path. The base may be empty if the path ends with a path separator.
-func parentAndBase(current string) (string, string) {
-	search, _ := fs.ExpandTilde(current)
-	pathSeparator := string(fs.PathSeparator)
-
-	if strings.HasSuffix(current, pathSeparator) && !strings.HasSuffix(search, pathSeparator) {
-		search = search + pathSeparator
-	}
-	searchDir := filepath.Dir(search)
-
-	// The searchFile should be the last component of search, or empty if it
-	// ends with a path separator
-	var searchFile string
-	if !strings.HasSuffix(search, pathSeparator) {
-		searchFile = filepath.Base(search)
-	}
-
-	return searchDir, searchFile
-}
-
 func browseFiles(ffs fs.Filesystem, search string) []string {
 	subdirectories, _ := ffs.DirNames(".")
 	pathSeparator := string(fs.PathSeparator)
@@ -1841,8 +1823,8 @@ func browseFiles(ffs fs.Filesystem, search string) []string {
 	}
 
 	// sort to return matches in deterministic order (don't depend on file system order)
-	sort.Strings(exactMatches)
-	sort.Strings(caseInsMatches)
+	slices.Sort(exactMatches)
+	slices.Sort(caseInsMatches)
 	return append(exactMatches, caseInsMatches...)
 }
 
@@ -1939,7 +1921,7 @@ func dirNames(dir string) []string {
 		}
 	}
 
-	sort.Strings(dirs)
+	slices.Sort(dirs)
 	return dirs
 }
 

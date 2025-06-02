@@ -330,7 +330,7 @@ func runCommand(cmd string, target target) {
 		writeCompatJSON()
 
 	case "deb":
-		buildDeb(target)
+		buildDeb(target, tags)
 
 	case "vet":
 		metalintShort()
@@ -609,7 +609,7 @@ func buildZip(target target, tags []string) {
 	fmt.Println(filename)
 }
 
-func buildDeb(target target) {
+func buildDeb(target target, tags []string) {
 	os.RemoveAll("deb")
 
 	// "goarch" here is set to whatever the Debian packages expect. We correct
@@ -623,7 +623,7 @@ func buildDeb(target target) {
 		goarch = "arm"
 	}
 
-	build(target, []string{"noupgrade"})
+	build(target, append(tags, "noupgrade"))
 
 	for i := range target.installationFiles {
 		target.installationFiles[i].src = strings.Replace(target.installationFiles[i].src, "{{binary}}", target.BinaryName(), 1)
@@ -644,6 +644,9 @@ func buildDeb(target target) {
 		// Debian package version, and thus thinks 0.14.26-rc.1 is better
 		// than just 0.14.26. This rectifies that.
 		debver = strings.Replace(debver, "-", "~", -1)
+	}
+	if strings.Contains(debver, "_") {
+		debver = strings.Replace(debver, "_", "~", -1)
 	}
 	args := []string{
 		"-t", "deb",
