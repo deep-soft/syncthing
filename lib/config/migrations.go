@@ -8,6 +8,7 @@ package config
 
 import (
 	"cmp"
+	"log/slog"
 	"net/url"
 	"os"
 	"path"
@@ -16,6 +17,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/syncthing/syncthing/internal/slogutil"
 	"github.com/syncthing/syncthing/lib/build"
 	"github.com/syncthing/syncthing/lib/fs"
 	"github.com/syncthing/syncthing/lib/netutil"
@@ -28,6 +30,7 @@ import (
 // put the newest on top for readability.
 var (
 	migrations = migrationSet{
+		{51, migrateToConfigV51},
 		{50, migrateToConfigV50},
 		{37, migrateToConfigV37},
 		{36, migrateToConfigV36},
@@ -96,6 +99,18 @@ func (m migration) apply(cfg *Configuration) {
 		m.convert(cfg)
 	}
 	cfg.Version = m.targetVersion
+}
+
+func migrateToConfigV51(cfg *Configuration) {
+	oldDefault := 2
+	for i, fcfg := range cfg.Folders {
+		if fcfg.MaxConcurrentWrites == oldDefault {
+			cfg.Folders[i].MaxConcurrentWrites = maxConcurrentWritesDefault
+		}
+	}
+	if cfg.Defaults.Folder.MaxConcurrentWrites == oldDefault {
+		cfg.Defaults.Folder.MaxConcurrentWrites = maxConcurrentWritesDefault
+	}
 }
 
 func migrateToConfigV50(cfg *Configuration) {
@@ -226,7 +241,7 @@ func migrateToConfigV23(cfg *Configuration) {
 				fs.Hide(DefaultMarkerName) // ignore error
 			}
 			if err != nil {
-				l.Infoln("Failed to upgrade folder marker:", err)
+				slog.Warn("Failed to upgrade folder marker", slogutil.Error(err))
 			}
 		}
 	}
