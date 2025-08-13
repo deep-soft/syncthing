@@ -1,4 +1,4 @@
-name: act - Build Syncthing - old
+name: act - Build Syncthing - old - 01
 
 on:
 #  pull_request:
