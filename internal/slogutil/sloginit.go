@@ -7,41 +7,41 @@
 package slogutil
 
 import (
+	"io"
 	"log/slog"
 	"os"
-	"strings"
+	"time"
 )
 
 var (
-	GlobalRecorder = &lineRecorder{level: -1000}
-	ErrorRecorder  = &lineRecorder{level: slog.LevelError}
-	globalLevels   = &levelTracker{
+	GlobalRecorder    = &lineRecorder{level: -1000}
+	ErrorRecorder     = &lineRecorder{level: slog.LevelError}
+	DefaultLineFormat = LineFormat{
+		TimestampFormat: time.DateTime,
+		LevelString:     true,
+	}
+	globalLevels = &levelTracker{
 		levels: make(map[string]slog.Level),
 		descrs: make(map[string]string),
 	}
-	slogDef = slog.New(&formattingHandler{
-		recs: []*lineRecorder{GlobalRecorder, ErrorRecorder},
-		out:  os.Stdout,
-	})
+	globalFormatter = &formattingOptions{
+		LineFormat: DefaultLineFormat,
+		recs:       []*lineRecorder{GlobalRecorder, ErrorRecorder},
+		out:        logWriter(),
+	}
+	slogDef = slog.New(&formattingHandler{opts: globalFormatter})
 )
+
+func logWriter() io.Writer {
+	if os.Getenv("LOGGER_DISCARD") != "" {
+		// Hack to completely disable logging, for example when running
+		// benchmarks.
+		return io.Discard
+	}
+
+	return os.Stdout
+}
 
 func init() {
 	slog.SetDefault(slogDef)
-
-	// Handle legacy STTRACE var
-	pkgs := strings.Split(os.Getenv("STTRACE"), ",")
-	for _, pkg := range pkgs {
-		pkg = strings.TrimSpace(pkg)
-		if pkg == "" {
-			continue
-		}
-		level := slog.LevelDebug
-		if cutPkg, levelStr, ok := strings.Cut(pkg, ":"); ok {
-			pkg = cutPkg
-			if err := level.UnmarshalText([]byte(levelStr)); err != nil {
-				slog.Warn("Bad log level requested in STTRACE", slog.String("pkg", pkg), slog.String("level", levelStr), Error(err))
-			}
-		}
-		globalLevels.Set(pkg, level)
-	}
 }

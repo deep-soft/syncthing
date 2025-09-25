@@ -27,10 +27,15 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "SYNCTHING-CONFIG" "5" "Aug 11, 2025" "v2.0.0" "Syncthing"
+.TH "SYNCTHING-CONFIG" "5" "Sep 14, 2025" "v2.0.0" "Syncthing"
 .SH NAME
 syncthing-config \- Syncthing Configuration
-.SH SYNOPSIS
+.SH OVERVIEW
+.sp
+This page covers how to configure Syncthing for file synchronization, including device setup, folder configuration, connection settings, and various configuration methods through the web GUI, command\-line, or direct file editing.
+.SH CONFIGURATION FILE LOCATIONS
+.sp
+The default configuration and database directory locations are:
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -143,7 +148,7 @@ may no longer correspond to the defaults.
         <markerName>.stfolder</markerName>
         <copyOwnershipFromParent>false</copyOwnershipFromParent>
         <modTimeWindowS>0</modTimeWindowS>
-        <maxConcurrentWrites>2</maxConcurrentWrites>
+        <maxConcurrentWrites>16</maxConcurrentWrites>
         <disableFsync>false</disableFsync>
         <blockPullOrder>standard</blockPullOrder>
         <copyRangeMethod>standard</copyRangeMethod>
@@ -245,7 +250,7 @@ may no longer correspond to the defaults.
             <markerName>.stfolder</markerName>
             <copyOwnershipFromParent>false</copyOwnershipFromParent>
             <modTimeWindowS>0</modTimeWindowS>
-            <maxConcurrentWrites>2</maxConcurrentWrites>
+            <maxConcurrentWrites>16</maxConcurrentWrites>
             <disableFsync>false</disableFsync>
             <blockPullOrder>standard</blockPullOrder>
             <copyRangeMethod>standard</copyRangeMethod>
@@ -335,7 +340,7 @@ GUI.
     <markerName>.stfolder</markerName>
     <copyOwnershipFromParent>false</copyOwnershipFromParent>
     <modTimeWindowS>0</modTimeWindowS>
-    <maxConcurrentWrites>2</maxConcurrentWrites>
+    <maxConcurrentWrites>16</maxConcurrentWrites>
     <disableFsync>false</disableFsync>
     <blockPullOrder>standard</blockPullOrder>
     <copyRangeMethod>standard</copyRangeMethod>
@@ -602,7 +607,7 @@ folder is located on a FAT partition, and \fB0\fP otherwise.
 .TP
 .B maxConcurrentWrites
 Maximum number of concurrent write operations while syncing. Increasing this might increase or
-decrease disk performance, depending on the underlying storage. Default is \fB2\fP\&.
+decrease disk performance, depending on the underlying storage. Default is \fB16\fP\&.
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -1550,7 +1555,7 @@ are set, \fI\%\-\-auditfile\fP takes priority.
         <markerName>.stfolder</markerName>
         <copyOwnershipFromParent>false</copyOwnershipFromParent>
         <modTimeWindowS>0</modTimeWindowS>
-        <maxConcurrentWrites>2</maxConcurrentWrites>
+        <maxConcurrentWrites>16</maxConcurrentWrites>
         <disableFsync>false</disableFsync>
         <blockPullOrder>standard</blockPullOrder>
         <copyRangeMethod>standard</copyRangeMethod>
